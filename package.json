@@ -1,0 +1,15 @@
+{
+  "name": "whale-makelink",
+  "version": "1.0.3",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "makelink": "./index.js"
+  },
+  "keywords": [],
+  "author": "jingwhale@126.com",
+  "license": "ISC"
+}
