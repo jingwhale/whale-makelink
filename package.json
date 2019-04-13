@@ -1,7 +1,7 @@
 {
   "name": "whale-makelink",
   "version": "1.0.4",
-  "description": "",
+  "description": "Make-link can get all the project folders of the current directory, and generate the project link directory in the readme.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,7 +9,7 @@
   "bin": {
     "makelink": "./index.js"
   },
-  "keywords": [],
-  "author": "jingwhale@126.com",
+  "keywords": ["makelink"],
+  "author": "jingwhale@yeah.net",
   "license": "ISC"
 }
