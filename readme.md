@@ -1,5 +1,5 @@
 # whale-makelink
-![verion](https://img.shields.io/badge/npm-1.0.7-brightgreen.svg)
+![verion](https://img.shields.io/badge/npm-1.0.8-brightgreen.svg)
 
 Make-link can get all the project folders of the current directory, and generate the project link directory in the readme
 
