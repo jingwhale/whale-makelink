@@ -3,7 +3,7 @@ const path = require("path");
 
 var host = 'http://whalexplorer.coding.me/prototype/';
 
-var dataHead = "项目工程<br/><br/>";
+var dataHead = "项目原型<br/><br/>";
 
 var dataBody = "";
 
