@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const fs = require('fs');
 
 var dataHead = "项目原型<br/><br/>";
