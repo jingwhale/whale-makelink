@@ -17,5 +17,9 @@
     "makelink"
   ],
   "author": "jingwhale@yeah.net",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^2.20.0",
+    "validator": "^10.11.0"
+  }
 }
