@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const path = require('path');
+const Path = require('path');
 const fs = require('fs');
 const validator = require('validator');
 const program = require('commander');
@@ -15,7 +15,8 @@ var itmDesign = "/design/";
 //定义参数,以及参数内容的描述
 program
     .version('0.0.1')
-    .option('-h, --host <url>', 'a string of type url argument','http://whalexplorer.coding.me/prototype/');
+    .option('-h, --host <url>', 'a string of type url argument','http://whalexplorer.coding.me/prototype/')
+    .option('-m, --mode <notanumber>', 'a string of type url argument',1);
 
 //添加额外的文档描述
 program.on('help', function() {
@@ -27,6 +28,7 @@ program.on('help', function() {
 
 //解析commandline arguments
 program.parse(process.argv);
+
 
 if(program.host){
     if(validator.isURL(program.host)){
@@ -40,10 +42,10 @@ if(program.host){
 }
 
 //输出结果
-console.info('--host:');
-console.log(program.host);
+console.info('--host:'+program.host);
+console.info('--mode:'+program.mode);
 
-const pathName = path.resolve('./');//当前命令运行的目录；__dirname：返回运行文件所在的目录
+const pathName = Path.resolve('./');//当前命令运行的目录；__dirname：返回运行文件所在的目录
 console.log(pathName);
 
 const srcFile = pathName + '/README.md';
@@ -95,8 +97,35 @@ function readDesignList(preUrl,designFiles,newPath,project) {
         var newPathReadme = newPath+'/README.md';
 
         writeFile(newPathReadme,designData);
+
+        designDataBody = "";
     }
 }
+
+function writeSingleReadme(pathName,fileName,host,itmDesignFalg) {
+    var singleDataHead = '###《'+fileName+'》\n\n';
+
+    var singleDataBody1 = '['+fileName+']('+host+fileName+'/'+fileName+')\n\n';
+    var singleDataBody2 = '';
+    var singleDataBody3 = '';
+    if(!!itmDesignFalg){
+        singleDataBody2 = '[设计要素]('+'https://dev.tencent.com/u/whalexplorer/p/'+fileName+'/git/blob/master/design/README.md'+')\n\n';
+    }
+
+    var itemPath = pathName+'/'+fileName;
+    var files = fs.readdirSync(itemPath);
+    files.forEach(function (itm, index) {
+        var itmPath = itemPath+'/'+itm;
+        if(Path.extname(itmPath)=='.pdf'){
+            singleDataBody3 = '['+itm+']('+host+fileName+'/'+itm+')\n\n';
+        }
+    });
+    var singleData = singleDataHead + singleDataBody1 + singleDataBody2 + singleDataBody3;
+
+    var newSinglePathReadme = pathName+'/'+fileName+'/README.md';
+
+    writeFile(newSinglePathReadme,singleData);
+};
 
 function readFileList(path,host) {
     var files = fs.readdirSync(path);
@@ -106,21 +135,24 @@ function readFileList(path,host) {
             if(stat.isDirectory()){
                 var item = '['+itm+']('+host+itm+'/'+itm+')\r\r';
                 dataBody = dataBody + item;
-                console.log(item);
-            }
+                // console.log(item);
 
-            var newPath = path+'/'+itm+'/design';
-            fs.exists(newPath, function (exists) {
-                if(exists){
-                    console.log(newPath);
-                    var designFiles = fs.readdirSync(newPath);
-                    if(designFiles && designFiles.length>0){
-                        var preUrl = host+itm+itmDesign;
-                        readDesignList(preUrl,designFiles,newPath,itm)
-                        console.log(designFiles.length);
+                var newPath = path+'/'+itm+'/design';
+                var itmDesignFalg = false;
+                fs.exists(newPath, function (exists) {
+                    if(exists){
+                        console.log(newPath);
+                        var designFiles = fs.readdirSync(newPath);
+                        if(designFiles && designFiles.length>0){
+                            var preUrl = host+itm+itmDesign;
+                            readDesignList(preUrl,designFiles,newPath,itm)
+                            console.log(designFiles.length);
+                            itmDesignFalg = true;
+                            writeSingleReadme(path,itm,host,itmDesignFalg);
+                        }
                     }
-                }
-            })
+                })
+            }
         }
     });
     return (dataHead+dataBody);
@@ -128,6 +160,8 @@ function readFileList(path,host) {
 
 function makelink(src,pathName,host){
     var data = readFileList(pathName,host);
-    // 写入文件内容（如果文件不存在会创建一个文件）
-    writeFile(src,data,pathName);
+    if(program.mode==1){
+        // 写入文件内容（如果文件不存在会创建一个文件）
+        writeFile(src,data,pathName);
+    }
 }
