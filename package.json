@@ -1,6 +1,6 @@
 {
   "name": "whale-makelink",
-  "version": "1.3.0",
+  "version": "1.2.0",
   "description": "Make-link can get all the project folders of the current directory, and generate the project link directory in the readme.",
   "main": "index.js",
   "scripts": {
